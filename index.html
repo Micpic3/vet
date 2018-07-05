@@ -1,0 +1,302 @@
+<!-- HIT template: ImageTagging-v3.0 --><!-- Bootstrap v3.0.3 --><!-- Please note that Bootstrap CSS/JS and JQuery are 3rd party libraries that may update their url/code at any time. Amazon Mechanical Turk (MTurk) is including these libraries as a default option for you, but is not responsible for any changes to the external libraries -->
+<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" integrity="sha384-IS73LIqjtYesmURkDE9MXKbXqYA8rvKEp/ghicjem7Vc3mGRdQRptJSz60tvrB6+" rel="stylesheet" /><!-- The following snippet enables the 'responsive' behavior on smaller screens -->
+<meta content="width=device-width,initial-scale=1" name="viewport" /><!-- Instructions -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<section class="container" id="TaggingOfAnImage">
+<div class="row">
+<div class="col-xs-12 col-md-12">&nbsp;</div>
+<input name="thread_id" type="hidden" value="${thread_id}" />
+<div class="row" id="workContent">
+<!-- <div class="col-xs-12 col-md-12 col-lg-12" style="border: 4px solid rgb(140, 167, 190); border-image: none; background-color: rgb(208, 225, 244);">
+<div class="holder" style="margin: 30px auto; width: 900px; height: 300px; overflow: auto;">
+<div>
+-->
+<div id="conversationvar">Name: <input class="fname" type="text" name="fname"><br><input class="start" type="submit" value="start">
+
+</div>
+<!---
+</div>
+</div>
+</div>
+-->
+<div class="static">
+Submitted
+</div>
+<div class="col-xs-12 col-md-12 col-lg-12 text-center" style="margin-top: 30px;"><span style="font-size: 23px;"><strong>Task:</strong></span> <span style="font-size: 20px;">Scroll through the above conversation and select all of the below topics that apply:</span></div>
+
+<div class="col-xs-12 col-md-12 col-lg-12" style="margin-top: 30px;">
+<div class="col-xs-12 col-md-3 col-lg-3 padR0"><label><input class="chk1" name="Diarrhea" type="checkbox" value="Diarrhea" />Diarrhea</label></div>
+
+<div class="col-xs-12 col-md-3 col-lg-3 padR0"><label><input class="chk1" name="Vomit" type="checkbox" value="Vomit" />Vomit</label></div>
+
+<div class="col-xs-12 col-md-3 col-lg-3 padR0"><label><input class="chk1" name="ItchySkin" type="checkbox" value="Itchy Skin" />Itchy Skin</label></div>
+
+<div class="col-xs-12 col-md-3 col-lg-3"><label><input class="chk1" name="Cough" type="checkbox" value="Cough" />Cough</label></div>
+</div>
+
+<div class="col-xs-12 col-md-12 col-lg-12" style="margin-top: 15px;">
+<div class="col-xs-12 col-md-3 col-lg-3 padR0"><label><input class="chk1" name="Urinary" type="checkbox" value="Urinary" />Urinary</label></div>
+
+<div class="col-xs-12 col-md-3 col-lg-3 padR0"><label><input class="chk1" name="Eye" type="checkbox" value="Eye" />Eye</label></div>
+
+<div class="col-xs-12 col-md-3 col-lg-3 padR0"><label><input class="chk1" name="Ear" type="checkbox" value="Ear" />Ear</label></div>
+
+<div class="col-xs-12 col-md-3 col-lg-3"><label><input class="chk1" name="Dentistry" type="checkbox" value="Dentistry" />Dentistry</label></div>
+</div>
+
+<div class="col-xs-12 col-md-12 col-lg-12" style="margin-top: 15px;">
+<div class="col-xs-12 col-md-3 col-lg-3 padR0"><label><input class="chk1" name="LumpsBumpsMasses" type="checkbox" value="Lumps,Bumps, Masses" />Lumps, Bumps, Masses</label></div>
+
+<div class="col-xs-12 col-md-3 col-lg-3 padR0"><label><input class="chk1" name="Diet" type="checkbox" value="Diet" />Diet</label></div>
+
+<div class="col-xs-12 col-md-3 col-lg-3 padR0"><label><input class="chk1" name="InjuriesWounds" type="checkbox" value="Injuries/Wounds" />Injuries/Wounds</label></div>
+
+<div class="col-xs-12 col-md-3 col-lg-3"><label><input class="chk1" name="Vaccinations" type="checkbox" value="Vaccinations" />Vaccinations</label></div>
+</div>
+
+<div class="col-xs-12 col-md-12 col-lg-12" style="margin-top: 15px;">
+<div class="col-xs-12 col-md-3 col-lg-3 padR0"><label><input class="chk1" name="Ticks" type="checkbox" value="Ticks" />Ticks</label></div>
+
+<div class="col-xs-12 col-md-3 col-lg-3 padR0"><label><input class="chk1" name="Worms" type="checkbox" value="Worms" />Worms</label></div>
+
+<div class="col-xs-12 col-md-3 col-lg-3 padR0"><label><input class="chk1" name="Fleas" type="checkbox" value="Fleas" />Fleas</label></div>
+
+<div class="col-xs-12 col-md-3 col-lg-3"><label><input class="chk1" name="AteSomethingStrange" type="checkbox" value="Ate-Somthing Strange" />Ate-Something Strange</label></div>
+</div>
+
+<div class="col-xs-12 col-md-12 col-lg-12" style="margin-top: 15px; margin-bottom: 15px;">
+<div class="col-xs-12 col-md-3 col-lg-3 col-md-push-3 col-lg-push-3 padR0"><label><input class="chk1" name="MentalDistress" type="checkbox" value="Mental Distress" />Mental Distress</label></div>
+
+<div class="col-xs-12 col-md-3 col-lg-3 col-md-push-3 col-lg-push-3 padR0"><label><input id="noneofthese" name="NoneOfTheseApply" type="checkbox" value="NONE OF THESE APPLY" />NONE OF THESE APPLY</label></div>
+</div>
+</div>
+<input class="submit" type="submit" value="submit">
+</div>
+</section>
+<!-- End Image Tagging Layout --><!-- Open internal style sheet -->
+<style type="text/css">input[type="radio"], [type="checkbox"] {
+ -ms-transform: scale(1.5); /* IE 9 */
+ -webkit-transform: scale(1.5); /* Chrome, Safari, Opera */
+ transform: scale(1.5);
+ margin-right: 15px !important;
+ }
+
+ .btns {
+ width: 100%;
+ height: 85px;
+ background-color: #67A1DD;
+ color: #fff !important;
+ border: 0px none;
+ -webkit-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.25);
+ -moz-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.25);
+ box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.25);
+ font-size: 20px;
+ }
+
+ .padR0 {
+ padding-right: 0px !important;
+ }
+
+ .btns:hover {
+ color: #fff !important;
+ }
+
+ .btns:focus {
+ background-color: #008E00 !important;
+ }
+
+ .btnActive {
+ background-color: #008E00 !important;
+ }
+
+ .btnprev {
+ background-color: #EB8005;
+ color: #000;
+ border: 0px none;
+ font-size: 17px;
+ font-weight: bold;
+ padding: 8px 15px;
+ }
+
+ .spanQCls {
+ font-size: 23px;
+ }
+
+ .spanACls {
+ font-size: 20px;
+ margin-left: 5px;
+ }
+
+ .divCls {
+ margin-top: 15px;
+ }
+
+ .flat-table {
+   display: block;
+     font-family: sans-serif;
+       -webkit-font-smoothing: antialiased;
+         font-size: 115%;
+    overflow: auto;
+      width: auto;
+        border: 2px solid transparent !important;
+          margin-left: auto;
+     margin-right: auto;
+     }
+
+       tbody {
+           border: 2px solid rgb(255,0,0) !important;
+      }
+   th {
+       background-color: #107896;
+    color: white;
+        font-weight: bold;
+     padding: 20px 30px;
+         text-align: center;
+      border: 2px solid rgb(0,0,0) !important;
+          font-size: 100%;
+    
+      }
+    td {
+        background-color: rgb(238, 238, 238);
+     color: black;
+         padding: 20px 30px;
+      border: 2px solid rgb(0,0,0) !important;
+          text-align: center;
+       font-size: 80%;
+          font-weight: bold;
+      }
+
+ div.static {
+     position: absolute;
+         background: #61CB2B;
+      top: 10px;
+        left: 0; 
+   right: 0; 
+     margin-left: auto; 
+       margin-right: auto;
+      width: 200px;
+           height: 60px;
+      text-align: center;
+            font-size: 30px;
+      padding-top: 10px;
+      padding-bottom: 10px;
+         border-radius: 20px;
+      display: none;
+      }
+
+
+ .submit {
+   
+ }
+ </style>
+ <!-- Close internal style sheet --><!-- Please note that Bootstrap CSS/JS and JQuery are 3rd party libraries that may update their url/code at any time. Amazon Mechanical Turk (MTurk) is including these libraries as a default option for you, but is not responsible for any changes to the external libraries --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js" integrity="sha384-s1ITto93iSMDxlp/79qhWHi+LsIi9Gx6yL+cOKDuymvihkfol83TYbLbOw+W/wv4" crossorigin="anonymous"></script><script>
+
+var form = false;
+var user = "";
+var convo_id = 0;
+var API_url = 'https://omxz4u00t4.execute-api.us-east-1.amazonaws.com/prod/entries';
+var checked_array = [];
+var convo;
+
+function submit_convo(){
+  $("input:checkbox:checked").each(function(){
+      checked_array.push($(this).val());
+      });
+  $.ajax({
+    type: "POST",
+    url: API_url,
+    success: function(data){
+      $(".static").show().fadeOut(2000);
+      document.body.scrollTop = document.documentElement.scrollTop = 0;
+
+      $('.chk1').prop('checked', false);
+      $('#noneofthese').prop('checked', false);
+      get_next_convo();
+    },
+    contentType: "application/json",
+    data: JSON.stringify({"convo_id": convo_id, "labeler": user, "labels": checked_array , "convo": convo})
+  });
+
+ 
+//  $.post(API_url,
+//    {
+//      name: user,
+//      convo_id: convo_id
+//    },
+//    function(data, status){
+//      if (status == "success"){
+//        $(".static").show().fadeOut(2000);
+//        document.body.scrollTop = document.documentElement.scrollTop = 0;
+//      } else { 
+//        alert("error");
+//      }
+//    }
+//  
+//  );
+}
+
+function get_next_convo(){
+  $.getJSON(API_url, function(data, status){
+    if (status == "success" && data.labels[0] != "DONE"){
+      convo_id = data.convo_id;
+      convo = data.convo
+      document.getElementById("conversationvar").innerHTML = convo; 
+      $('.chk1').prop('checked', false);
+      $('#noneofthese').prop('checked', false);
+
+      form = true;
+          } else {
+      document.getElementById("conversationvar").innerHTML = 'No form available. <input class="start" type="submit" value="Request Form">';
+    }
+  });
+}
+
+ $(document).ready(function () {
+
+ $(".start").click(function (e) {
+   user = $(".fname").val()
+   if (user == ""){
+     alert("No name entered");
+   } else {
+     get_next_convo();  
+   }
+ });
+
+ $(".submit").click(function (e) {
+ 
+
+   if (!form){
+     alert("No form to submit") 
+   } else if ($(":checkbox:checked").length == 0){
+     alert("Please check some boxes"); 
+   } else {
+     form = false;
+     submit_convo();
+   }
+
+
+  return false;
+    
+ });
+ 
+ $("#noneofthese").click(function (e) {
+ 
+ $('.chk1').prop('checked', false);
+ });
+
+ $(".chk1").click(function (e) {
+
+ $('#noneofthese').prop('checked', false);
+ });
+
+ $(".btns").click(function (e) {
+ $(this).addClass("btnActive");
+ var btnval = $(this).val();
+ //alert(btnval);
+ });
+
+
+
+ });
+
+ </script>
