@@ -22,14 +22,14 @@
 <div class="static">
 Submitted
 </div>
-<div class="col-xs-12 col-md-12 col-lg-12 text-center" style="margin-top: 30px;"><span style="font-size: 23px;"><strong>Task:</strong></span> <span style="font-size: 20px;">Scroll through the above conversation and select all of the below topics that apply:</span></div>
+<div class="col-xs-12 col-md-12 col-lg-12 text-center" style="margin-top: 30px;"><span style="font-size: 23px;"><strong>Task:</strong></span> <span style="font-size: 20px;">Scroll through the above conversation and determine what problems the pet is having.  Check all that apply:</span></div>
 
 <div class="col-xs-12 col-md-12 col-lg-12" style="margin-top: 30px;">
 <div class="col-xs-12 col-md-3 col-lg-3 padR0"><label><input class="chk1" name="Diarrhea" type="checkbox" value="Diarrhea" />Diarrhea</label></div>
 
 <div class="col-xs-12 col-md-3 col-lg-3 padR0"><label><input class="chk1" name="Vomit" type="checkbox" value="Vomit" />Vomit</label></div>
 
-<div class="col-xs-12 col-md-3 col-lg-3 padR0"><label><input class="chk1" name="Skin Problems" type="checkbox" value="Skin Problems" />Skin Problems</label></div>
+<div class="col-xs-12 col-md-3 col-lg-3 padR0"><label><input class="chk1" name="Skin" type="checkbox" value="Skin" />Skin</label></div>
 
 <div class="col-xs-12 col-md-3 col-lg-3"><label><input class="chk1" name="Cough" type="checkbox" value="Cough" />Cough</label></div>
 </div>
@@ -45,7 +45,7 @@ Submitted
 </div>
 
 <div class="col-xs-12 col-md-12 col-lg-12" style="margin-top: 15px;">
-<div class="col-xs-12 col-md-3 col-lg-3 padR0"><label><input class="chk1" name="LumpsBumpsMasses" type="checkbox" value="Lumps,Bumps, Masses" />Lumps, Bumps, Masses</label></div>
+<div class="col-xs-12 col-md-3 col-lg-3 padR0"><label><input class="chk1" name="Lumps:Masses:Tumors" type="checkbox" value="Lumps, Masses, or Tumors" />Lumps, Masses, or Tumors</label></div>
 
 <div class="col-xs-12 col-md-3 col-lg-3 padR0"><label><input class="chk1" name="Diet" type="checkbox" value="Diet" />Diet</label></div>
 
@@ -67,9 +67,11 @@ Submitted
 <div class="col-xs-12 col-md-12 col-lg-12" style="margin-top: 15px; margin-bottom: 15px;">
 <div class="col-xs-12 col-md-3 col-lg-3 col-md-push-3 col-lg-push-3 padR0"><label><input class="chk1" name="MentalDistress" type="checkbox" value="Mental Distress" />Mental Distress</label></div>
 
+<div class="col-xs-12 col-md-3 col-lg-3 col-md-push-3 col-lg-push-3 padR0"><label><input class="chk1" name="Seizures" type="checkbox" value="Seizures" />Seizures</label></div>
+
 <div class="col-xs-12 col-md-3 col-lg-3 col-md-push-3 col-lg-push-3 padR0"><label><input id="noneofthese" name="NoneOfTheseApply" type="checkbox" value="NONE OF THESE APPLY" />NONE OF THESE APPLY</label></div>
 </div>
-</div>
+</div class=submitdiv>
 <input class="submit" type="submit" value="submit">
 </div>
 </section>
@@ -185,9 +187,26 @@ Submitted
       }
 
 
- .submit {
+ .container {
+ 	padding-bottom: 30px;
    
  }
+
+ .loader {
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
  </style>
  <!-- Close internal style sheet --><!-- Please note that Bootstrap CSS/JS and JQuery are 3rd party libraries that may update their url/code at any time. Amazon Mechanical Turk (MTurk) is including these libraries as a default option for you, but is not responsible for any changes to the external libraries --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js" integrity="sha384-s1ITto93iSMDxlp/79qhWHi+LsIi9Gx6yL+cOKDuymvihkfol83TYbLbOw+W/wv4" crossorigin="anonymous"></script><script>
 
@@ -198,25 +217,36 @@ var API_url = 'https://omxz4u00t4.execute-api.us-east-1.amazonaws.com/prod/entri
 var checked_array = [];
 var convo;
 
+var submithtml = '<input class="submit" type="submit" value="submit">';
+var loaderhtml = '<div class="loader"></div>'
+
 function submit_convo(){
+  checked_array = [];
   $("input:checkbox:checked").each(function(){
       checked_array.push($(this).val());
       });
+
+  $(".submitdiv").innerHTML = loaderhtml;
+
   $.ajax({
     type: "POST",
     url: API_url,
     success: function(data){
-      $(".static").show().fadeOut(2000);
+      document.getElementById("conversationvar").innerHTML = '';
       document.body.scrollTop = document.documentElement.scrollTop = 0;
-
+      $(".static").show().fadeOut(2000);
       $('.chk1').prop('checked', false);
       $('#noneofthese').prop('checked', false);
+      $(".submitdiv").innerHTML = submithtml;
       get_next_convo();
+    },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+        $(".submitdiv").innerHTML = submithtml;
+     alert("Could not submit at this time.");
     },
     contentType: "application/json",
     data: JSON.stringify({"convo_id": convo_id, "labeler": user, "labels": checked_array , "convo": convo})
   });
-
  
 //  $.post(API_url,
 //    {
@@ -274,7 +304,6 @@ function get_next_convo(){
      submit_convo();
    }
 
-  
 
   return false;
     
