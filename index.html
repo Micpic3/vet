@@ -12,7 +12,19 @@
 <div>
 -->
 <input class="help" type="submit" value="help">
-<div id="conversationvar">Name: <input class="fname" type="text" name="fname"><br><input class="start" type="submit" value="start">
+<div id="conversationvar">
+
+<div class="nameinput">  
+Name: <input class="fname" type="text" name="fname"><br>
+<input class="start" type="submit" value="start">
+</div>
+----------------
+<div class="reviewinput">  
+Review: <input class="freview" type="text" name="freview"><br>
+<input class="review" type="submit" value="review">
+</div>
+
+
 
 
 </div>
@@ -73,7 +85,7 @@ Submitted
 
 <div class="col-xs-12 col-md-3 col-lg-3 col-md-push-3 col-lg-push-3 padR0"><label><input id="noneofthese" name="NoneOfTheseApply" type="checkbox" value="NONE OF THESE APPLY" />NONE OF THESE APPLY</label></div>
 </div>
-</div class=submitdiv>
+<div id="submitdiv">
 <input class="submit" type="submit" value="submit">
 </div>
 </section>
@@ -227,6 +239,7 @@ var API_url = 'https://omxz4u00t4.execute-api.us-east-1.amazonaws.com/prod/entri
 var checked_array = [];
 var convo;
 
+
 var submithtml = '<input class="submit" type="submit" value="submit">';
 var loaderhtml = '<div class="loader"></div>'
 
@@ -255,7 +268,7 @@ function submit_convo(){
      alert("Could not submit at this time.");
     },
     contentType: "application/json",
-    data: JSON.stringify({"convo_id": convo_id, "labeler": user, "labels": checked_array , "convo": convo})
+    data: JSON.stringify({"review": false, "convo_id": convo_id, "labeler": user, "labels": checked_array , "convo": convo})
   });
  
 //  $.post(API_url,
@@ -291,6 +304,32 @@ function get_next_convo(){
   });
 }
 
+
+function get_review_convo(){
+
+    $.ajax({
+    type: "POST",
+    url: API_url,
+    success: function(data){
+      document.getElementById("conversationvar").innerHTML = data.convo;
+      document.body.scrollTop = document.documentElement.scrollTop = 0;
+      $('.chk1').prop('checked', false);
+      $('#noneofthese').prop('checked', false);
+      $("#submitdiv").html("Refresh the page to request new conversation.");
+    },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+        $(".submitdiv").innerHTML = submithtml;
+     alert("Could not find convo with that id.");
+    },
+    contentType: "application/json",
+    data: JSON.stringify({"review": true, "convo_id": convo_id})
+  });
+
+
+}
+
+
+
  $(document).ready(function () {
 
  $(".start").click(function (e) {
@@ -302,6 +341,18 @@ function get_next_convo(){
      get_next_convo();  
    }
  });
+
+ $(".review").click(function (e) {
+   convo_id = $(".freview").val()
+   if (convo_id == ""){
+     alert("No review entered");
+   } else {
+     document.getElementById("conversationvar").innerHTML = loaderhtml; 
+     get_review_convo();  
+   }
+ });
+
+
 
  $(".help").click(function () {
     window.open('./vetinstructions.pdf','_blank');
