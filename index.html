@@ -11,7 +11,12 @@
 <div class="holder" style="margin: 30px auto; width: 900px; height: 300px; overflow: auto;">
 <div>
 -->
-<input class="help" type="submit" value="help">
+<div class="help">
+<input class="helpInput" type="submit" value="help">
+<div>
+  Session Count: <b class="count">0</b>
+</div>
+</div>
 <div id="conversationvar">
 
 <div class="nameinput">  
@@ -86,7 +91,8 @@ Submitted
 <div class="col-xs-12 col-md-3 col-lg-3 col-md-push-3 col-lg-push-3 padR0"><label><input id="noneofthese" name="NoneOfTheseApply" type="checkbox" value="NONE OF THESE APPLY" />NONE OF THESE APPLY</label></div>
 </div>
 <div id="submitdiv">
-<input class="submit" type="submit" value="submit">
+<input class="submit" type="submit" value="submit"/>
+<div class="loaderbutton" style="display:none"></div>
 </div>
 </section>
 <!-- End Image Tagging Layout --><!-- Open internal style sheet -->
@@ -202,7 +208,7 @@ Submitted
 
 
  .container {
- 	padding-bottom: 30px;
+  padding-bottom: 30px;
    
  }
 
@@ -216,6 +222,18 @@ Submitted
   animation: spin 2s linear infinite;
 }
 
+ .loaderbutton {
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 60px;
+  height: 60px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+}
+
+
+
 @-webkit-keyframes spin {
   0% { -webkit-transform: rotate(0deg); }
   100% { -webkit-transform: rotate(360deg); }
@@ -225,9 +243,14 @@ Submitted
   position: absolute;
     right: 30px;
     top: 20px;
+}
+
+
+.helpInput {
     background-color: #A91B0D;
     color: white;
 }
+
 
  </style>
  <!-- Close internal style sheet --><!-- Please note that Bootstrap CSS/JS and JQuery are 3rd party libraries that may update their url/code at any time. Amazon Mechanical Turk (MTurk) is including these libraries as a default option for you, but is not responsible for any changes to the external libraries --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js" integrity="sha384-s1ITto93iSMDxlp/79qhWHi+LsIi9Gx6yL+cOKDuymvihkfol83TYbLbOw+W/wv4" crossorigin="anonymous"></script><script>
@@ -240,8 +263,7 @@ var checked_array = [];
 var convo;
 
 
-var submithtml = '<input class="submit" type="submit" value="submit">';
-var loaderhtml = '<div class="loader"></div>'
+var loaderhtml = '<div class="loader"></div>';
 
 function submit_convo(){
   checked_array = [];
@@ -249,43 +271,29 @@ function submit_convo(){
       checked_array.push($(this).val());
       });
 
-  $(".submitdiv").innerHTML = loaderhtml;
-
+  $(".loaderbutton").show();
+  $(".submit").hide();
   $.ajax({
     type: "POST",
     url: API_url,
     success: function(data){
+      $(".count").html(parseInt($(".count").html()) + 1);
+      $(".loaderbutton").hide();
       document.getElementById("conversationvar").innerHTML = '';
       document.body.scrollTop = document.documentElement.scrollTop = 0;
       $(".static").show().fadeOut(2000);
       $('.chk1').prop('checked', false);
       $('#noneofthese').prop('checked', false);
-      $(".submitdiv").innerHTML = submithtml;
       get_next_convo();
     },
       error: function(XMLHttpRequest, textStatus, errorThrown) {
-        $(".submitdiv").innerHTML = submithtml;
-     alert("Could not submit at this time.");
+         $(".submit").show();
+         alert("Could not submit at this time.");
     },
     contentType: "application/json",
     data: JSON.stringify({"review": false, "convo_id": convo_id, "labeler": user, "labels": checked_array , "convo": convo})
   });
- 
-//  $.post(API_url,
-//    {
-//      name: user,
-//      convo_id: convo_id
-//    },
-//    function(data, status){
-//      if (status == "success"){
-//        $(".static").show().fadeOut(2000);
-//        document.body.scrollTop = document.documentElement.scrollTop = 0;
-//      } else { 
-//        alert("error");
-//      }
-//    }
-//  
-//  );
+
 }
 
 function get_next_convo(){
@@ -293,7 +301,8 @@ function get_next_convo(){
     if (status == "success" && data.labels[0] != "DONE"){
       convo_id = data.convo_id;
       convo = data.convo
-      document.getElementById("conversationvar").innerHTML = convo; 
+      document.getElementById("conversationvar").innerHTML = convo;
+      $(".submit").show();
       $('.chk1').prop('checked', false);
       $('#noneofthese').prop('checked', false);
 
@@ -318,7 +327,7 @@ function get_review_convo(){
       $("#submitdiv").html("Refresh the page to request new conversation.");
     },
       error: function(XMLHttpRequest, textStatus, errorThrown) {
-        $(".submitdiv").innerHTML = submithtml;
+        $(".submit").show();
      alert("Could not find convo with that id.");
     },
     contentType: "application/json",
@@ -333,13 +342,14 @@ function get_review_convo(){
  $(document).ready(function () {
 
  $(".start").click(function (e) {
-   user = $(".fname").val()
+   user = $(".fname").val().replace(/\s/g,'').toLowerCase();
    if (user == ""){
      alert("No name entered");
    } else {
      document.getElementById("conversationvar").innerHTML = loaderhtml; 
      get_next_convo();  
    }
+   return false;
  });
 
  $(".review").click(function (e) {
@@ -359,10 +369,8 @@ function get_review_convo(){
  });
 
  $(".submit").click(function (e) {
- 
-
    if (!form){
-     alert("No form to submit") 
+     alert("No form to submit") ;
    } else if ($(":checkbox:checked").length == 0){
      alert("Please check some boxes"); 
    } else {
@@ -396,3 +404,5 @@ function get_review_convo(){
  });
 
  </script>
+
+
