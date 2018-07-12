@@ -16,6 +16,9 @@
 <div>
   Session Count: <b class="count">0</b>
 </div>
+<div>
+  Total Count: <b class="tcount">0</b>
+</div>
 </div>
 <div id="conversationvar">
 
@@ -297,20 +300,46 @@ function submit_convo(){
 }
 
 function get_next_convo(){
-  $.getJSON(API_url, function(data, status){
-    if (status == "success" && data.labels[0] != "DONE"){
-      convo_id = data.convo_id;
-      convo = data.convo
-      document.getElementById("conversationvar").innerHTML = convo;
-      $(".submit").show();
-      $('.chk1').prop('checked', false);
-      $('#noneofthese').prop('checked', false);
 
-      form = true;
-          } else {
+    $.ajax({
+    type: "POST",
+    url: API_url,
+    success: function(data){
+      if (data.labels[0] != "DONE") {
+        $(".tcount").html(data.count);
+        convo_id = data.convo_id;
+        convo = data.convo
+        document.getElementById("conversationvar").innerHTML = convo;
+        $(".submit").show();
+        $('.chk1').prop('checked', false);
+        $('#noneofthese').prop('checked', false);
+        form = true;     
+
+      } else {
+          document.getElementById("conversationvar").innerHTML = 'No form available. <input class="start" type="submit" value="Request Form">';
+      }
+    },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
       document.getElementById("conversationvar").innerHTML = 'No form available. <input class="start" type="submit" value="Request Form">';
-    }
+    },
+    contentType: "application/json",
+    data: JSON.stringify({"GET":true, "labeler": user})
   });
+  
+  // $.getJSON(API_url + '?user=' + user, function(data, status){
+  //   if (status == "success" && data.labels[0] != "DONE"){
+  //     convo_id = data.convo_id;
+  //     convo = data.convo
+  //     document.getElementById("conversationvar").innerHTML = convo;
+  //     $(".submit").show();
+  //     $('.chk1').prop('checked', false);
+  //     $('#noneofthese').prop('checked', false);
+
+  //     form = true;
+  //         } else {
+  //     document.getElementById("conversationvar").innerHTML = 'No form available. <input class="start" type="submit" value="Request Form">';
+  //   }
+  // });
 }
 
 
@@ -404,5 +433,7 @@ function get_review_convo(){
  });
 
  </script>
+
+
 
 
