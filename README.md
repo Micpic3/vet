@@ -16,7 +16,7 @@ After a conversation is loaded, the user is able to read the conversation, fill 
 
 The website was required to be static, so only HTML and Javascript were used. 
 
-**AWS Lambda: **
+**AWS Lambda:**
 
 The lambda function handles all requests from the website and interfaces with AWS DynamoDB to store and retrieve the appropriate data.  This function handles the logic of moving data between databases, updating the databases with new information from the user, and delivering the appropriate data to the user.  All of the logic is handled in a single lambda function at a single endpoint. It could be broken up to be more clean with multiple endpoints, but was chosen to stay in a single function to allow for quicker development.
 
